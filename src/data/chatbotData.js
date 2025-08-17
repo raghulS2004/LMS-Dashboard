@@ -13,7 +13,7 @@ export const chatbotData = {
         showChart: false
       },
       {
-        question: "Show me weekly user activity",
+        question: "Show weekly user activity chart",
         answer: "Here's your weekly user activity chart:",
         showChart: true,
         chartType: "line",
@@ -21,7 +21,7 @@ export const chatbotData = {
         chartTitle: "Weekly User Activity"
       },
       {
-        question: "What are the course completion rates?",
+        question: "Show course completion rates chart",
         answer: "Here are the completion rates for your courses:",
         showChart: true,
         chartType: "bar",
@@ -32,6 +32,23 @@ export const chatbotData = {
         question: "How much revenue did we generate this month?",
         answer: "This month's revenue is $12,500, bringing your total revenue to $156,000.",
         showChart: false
+      },
+      // Additional variations for better matching
+      {
+        question: "weekly user activity",
+        answer: "Here's your weekly user activity chart:",
+        showChart: true,
+        chartType: "line",
+        chartData: "weeklyUserActivity",
+        chartTitle: "Weekly User Activity"
+      },
+      {
+        question: "course completion rates",
+        answer: "Here are the completion rates for your courses:",
+        showChart: true,
+        chartType: "bar",
+        chartData: "courseCompletionRates",
+        chartTitle: "Course Completion Rates"
       }
     ]
   },
@@ -43,7 +60,7 @@ export const chatbotData = {
         showChart: false
       },
       {
-        question: "Show my weekly progress",
+        question: "Show weekly progress chart",
         answer: "Here's your weekly learning progress:",
         showChart: true,
         chartType: "line",
@@ -56,7 +73,7 @@ export const chatbotData = {
         showChart: false
       },
       {
-        question: "How am I performing in my courses?",
+        question: "Show course progress chart",
         answer: "Here's your course progress overview:",
         showChart: true,
         chartType: "bar",
@@ -67,6 +84,23 @@ export const chatbotData = {
         question: "What's my quiz history?",
         answer: "You've taken 4 quizzes with an average score of 90%.",
         showChart: false
+      },
+      // Additional variations for better matching
+      {
+        question: "weekly progress",
+        answer: "Here's your weekly learning progress:",
+        showChart: true,
+        chartType: "line",
+        chartData: "weeklyProgress",
+        chartTitle: "Weekly Learning Progress"
+      },
+      {
+        question: "course progress",
+        answer: "Here's your course progress overview:",
+        showChart: true,
+        chartType: "bar",
+        chartData: "currentCourses",
+        chartTitle: "Course Progress"
       }
     ]
   }

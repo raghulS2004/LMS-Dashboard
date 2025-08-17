@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+# LMS-Dashboard
+=======
 # Role-Based Learning Management System (LMS) Frontend
 
 A modern, responsive Learning Management System frontend built with React, Vite, and Tailwind CSS. This application demonstrates role-based access control with separate dashboards for Administrators and Students, featuring interactive charts, chatbot assistance, and comprehensive learning analytics.
@@ -219,3 +222,4 @@ For questions or issues:
 ---
 
 **Built with ❤️ using React, Vite, and Tailwind CSS**
+>>>>>>> cc41230 (Initial commit: Complete LMS Dashboard with role-based access control, admin/student dashboards, chatbot, and responsive design)

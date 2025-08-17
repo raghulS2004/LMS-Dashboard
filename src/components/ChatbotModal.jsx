@@ -52,7 +52,13 @@ const ChatbotModal = ({ isOpen, onClose }) => {
     const data = getChartData(chartDataKey);
     const config = chartConfigs[chartDataKey];
 
-    if (!data || !config) return null;
+    // Debug logging
+    console.log('Chart rendering:', { chartDataKey, data, config, chartType });
+
+    if (!data || !config) {
+      console.log('Missing data or config:', { data, config });
+      return null;
+    }
 
     if (chartType === 'line') {
       return (
@@ -113,12 +119,83 @@ const ChatbotModal = ({ isOpen, onClose }) => {
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
 
-    // Find matching Q&A
+    // Find matching Q&A with precise matching
     const qaData = currentRole === 'admin' ? chatbotData.admin.qa : chatbotData.student.qa;
-    const matchingQA = qaData.find(qa => 
-      qa.question.toLowerCase().includes(inputValue.toLowerCase()) ||
-      inputValue.toLowerCase().includes(qa.question.toLowerCase().split(' ')[0])
-    );
+    
+    // Create a more reliable matching system
+    let bestMatch = null;
+    let bestScore = 0;
+    
+    qaData.forEach(qa => {
+      const question = qa.question.toLowerCase();
+      const input = inputValue.toLowerCase();
+      
+      let score = 0;
+      
+      // Exact match gets highest score
+      if (question === input) {
+        score = 100;
+      }
+      // Question contains input gets high score
+      else if (question.includes(input)) {
+        score = 80;
+      }
+      // Input contains question gets high score
+      else if (input.includes(question)) {
+        score = 80;
+      }
+      // Check for key phrase matches
+      else {
+        const keyPhrases = [
+          'weekly user activity',
+          'course completion rates',
+          'weekly progress',
+          'course progress'
+        ];
+        
+        keyPhrases.forEach(phrase => {
+          if (input.includes(phrase) && question.includes(phrase)) {
+            score = 70;
+          }
+        });
+        
+        // Check for individual word matches (only for longer words)
+        const questionWords = question.split(' ').filter(word => word.length > 3);
+        const inputWords = input.split(' ').filter(word => word.length > 3);
+        
+        let wordMatches = 0;
+        questionWords.forEach(qWord => {
+          inputWords.forEach(inputWord => {
+            if (qWord === inputWord) {
+              wordMatches++;
+            }
+          });
+        });
+        
+        // Add score based on word matches
+        if (wordMatches > 0) {
+          score += wordMatches * 10;
+        }
+      }
+      
+      // Update best match if this score is higher
+      if (score > bestScore) {
+        bestScore = score;
+        bestMatch = qa;
+      }
+    });
+    
+    // Only use match if score is high enough
+    const matchingQA = bestScore >= 30 ? bestMatch : null;
+    
+    // Debug logging
+    console.log('Question matching:', { 
+      input: inputValue, 
+      bestMatch: bestMatch?.question,
+      bestScore,
+      matchingQA: matchingQA?.question,
+      qaData: qaData.map(q => q.question) 
+    });
 
     setTimeout(() => {
       if (matchingQA) {
@@ -131,6 +208,10 @@ const ChatbotModal = ({ isOpen, onClose }) => {
           chartData: matchingQA.chartData,
           chartTitle: matchingQA.chartTitle
         };
+        
+        // Debug logging for chart messages
+        console.log('Bot message with chart:', botMessage);
+        
         setMessages(prev => [...prev, botMessage]);
       } else {
         const botMessage = {
@@ -199,7 +280,7 @@ const ChatbotModal = ({ isOpen, onClose }) => {
         <div className="p-4 border-t bg-gray-50">
           <p className="text-sm text-gray-600 mb-2">Suggested questions:</p>
           <div className="flex flex-wrap gap-2">
-            {suggestions.slice(0, 3).map((suggestion, index) => (
+            {suggestions.map((suggestion, index) => (
               <button
                 key={index}
                 onClick={() => handleSuggestionClick(suggestion)}
