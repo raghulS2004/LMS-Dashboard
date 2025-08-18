@@ -1,4 +1,3 @@
-// Chatbot Q&A pairs and chart configurations for each role
 export const chatbotData = {
   admin: {
     qa: [
@@ -85,7 +84,6 @@ export const chatbotData = {
         answer: "You've taken 4 quizzes with an average score of 90%.",
         showChart: false
       },
-      // Additional variations for better matching
       {
         question: "weekly progress",
         answer: "Here's your weekly learning progress:",
@@ -106,7 +104,6 @@ export const chatbotData = {
   }
 };
 
-// Chart configurations for different data types
 export const chartConfigs = {
   weeklyUserActivity: {
     xAxis: "week",

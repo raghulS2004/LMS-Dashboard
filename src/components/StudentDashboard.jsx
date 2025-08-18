@@ -1,5 +1,6 @@
 import { studentDashboardData } from '../data/studentData';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Link, useNavigate } from 'react-router-dom';
 
 const StudentDashboard = () => {
   const getPriorityColor = (priority) => {
@@ -15,16 +16,16 @@ const StudentDashboard = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Learning Dashboard</h1>
           <p className="text-gray-600">Track your progress and stay on top of your learning journey</p>
         </div>
 
-        {/* Key Metrics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <div className="flex items-center justify-between">
@@ -75,9 +76,7 @@ const StudentDashboard = () => {
           </div>
         </div>
 
-        {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Weekly Progress Chart */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Weekly Learning Progress</h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -103,8 +102,6 @@ const StudentDashboard = () => {
               </LineChart>
             </ResponsiveContainer>
           </div>
-
-          {/* Course Progress Chart */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Course Progress Overview</h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -118,19 +115,22 @@ const StudentDashboard = () => {
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* Course Progress Cards */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
-          <div className="px-6 py-4 border-b border-gray-100">
+          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h3 className="text-lg font-semibold text-gray-800">Current Courses</h3>
+            <Link to="/courses" className="text-sm text-blue-600 hover:text-blue-700 transition-colors">View all</Link>
           </div>
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {studentDashboardData.currentCourses.map((course, index) => (
-                <div key={index} className="bg-gray-50 rounded-lg p-4">
+              {studentDashboardData.currentCourses.map((course) => (
+                <button
+                  key={course.id}
+                  onClick={() => navigate(`/courses/${course.id}`)}
+                  className="group text-left bg-gray-50 rounded-xl p-4 border border-gray-100 hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all"
+                >
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-gray-800">{course.name}</h4>
-                    <span className="text-sm text-gray-500">{course.progress}%</span>
+                    <h4 className="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">{course.name}</h4>
+                    <span className="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100">{course.progress}%</span>
                   </div>
                   <div className="mb-3">
                     <div className="w-full bg-gray-200 rounded-full h-2">
@@ -145,13 +145,15 @@ const StudentDashboard = () => {
                     <p>Instructor: {course.instructor}</p>
                     <p>Next Deadline: {course.nextDeadline}</p>
                   </div>
-                </div>
+                  <div className="mt-3 flex items-center justify-end text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                    View details →
+                  </div>
+                </button>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Upcoming Deadlines */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
           <div className="px-6 py-4 border-b border-gray-100">
             <h3 className="text-lg font-semibold text-gray-800">Upcoming Deadlines</h3>
@@ -198,7 +200,6 @@ const StudentDashboard = () => {
           </div>
         </div>
 
-        {/* Recent Activities */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100">
             <h3 className="text-lg font-semibold text-gray-800">Recent Activities</h3>

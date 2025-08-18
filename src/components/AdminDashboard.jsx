@@ -1,19 +1,15 @@
 import { adminDashboardData } from '../data/adminData';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const AdminDashboard = () => {
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Admin Dashboard</h1>
           <p className="text-gray-600">Monitor your organization's learning performance and metrics</p>
         </div>
 
-        {/* Key Metrics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <div className="flex items-center justify-between">
@@ -63,10 +59,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-
-        {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Weekly User Activity Chart */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Weekly User Activity</h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -92,8 +85,6 @@ const AdminDashboard = () => {
               </LineChart>
             </ResponsiveContainer>
           </div>
-
-          {/* Course Completion Rates Chart */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Course Completion Rates</h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -107,8 +98,6 @@ const AdminDashboard = () => {
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* Tabular Data */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100">
             <h3 className="text-lg font-semibold text-gray-800">Course Enrollments & Completions</h3>
@@ -154,8 +143,6 @@ const AdminDashboard = () => {
             </table>
           </div>
         </div>
-
-        {/* Additional Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
             <h4 className="text-sm font-medium text-gray-600 mb-2">Daily Active Users</h4>

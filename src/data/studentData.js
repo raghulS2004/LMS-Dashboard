@@ -1,6 +1,4 @@
-// Mock data for Student dashboard
 export const studentDashboardData = {
-  // Course progress
   currentCourses: [
     {
       id: 1,
@@ -31,14 +29,12 @@ export const studentDashboardData = {
     }
   ],
   
-  // Upcoming deadlines
   upcomingDeadlines: [
     { course: "React Fundamentals", assignment: "Final Project", dueDate: "2024-01-25", priority: "high" },
     { course: "JavaScript ES6+", assignment: "Module 5 Quiz", dueDate: "2024-01-30", priority: "medium" },
     { course: "CSS Grid & Flexbox", assignment: "Portfolio Submission", dueDate: "2024-01-28", priority: "high" }
   ],
   
-  // Quiz history
   quizHistory: [
     { course: "React Fundamentals", quiz: "Components & Props", score: 92, date: "2024-01-15" },
     { course: "React Fundamentals", quiz: "State & Lifecycle", score: 88, date: "2024-01-10" },
@@ -46,7 +42,6 @@ export const studentDashboardData = {
     { course: "CSS Grid & Flexbox", quiz: "Grid Layout", score: 95, date: "2024-01-08" }
   ],
   
-  // Weekly progress data for charts
   weeklyProgress: [
     { week: "Week 1", hours: 12, modules: 2 },
     { week: "Week 2", hours: 15, modules: 3 },
@@ -54,12 +49,10 @@ export const studentDashboardData = {
     { week: "Week 4", hours: 14, modules: 3 }
   ],
   
-  // Performance metrics
   overallGrade: 88.5,
   totalHours: 59,
   certificatesEarned: 2,
   
-  // Recent activities
   recentActivities: [
     { action: "Completed module", course: "React Fundamentals", time: "2 hours ago" },
     { action: "Submitted assignment", course: "JavaScript ES6+", time: "1 day ago" },

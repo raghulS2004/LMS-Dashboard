@@ -1,9 +1,11 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { RoleProvider, useRole } from './contexts/RoleContext';
 import RoleSelector from './components/RoleSelector';
 import AdminDashboard from './components/AdminDashboard';
 import StudentDashboard from './components/StudentDashboard';
 import ChatbotModal from './components/ChatbotModal';
+import CoursesPage from './components/CoursesPage';
+import CourseDetail from './components/CourseDetail';
 import { useState } from 'react';
 
 // Main App Content Component
@@ -18,7 +20,6 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -32,14 +33,20 @@ const AppContent = () => {
             </div>
             
             <div className="flex items-center space-x-4">
+              {currentRole === 'student' && (
+                <Link
+                  to="/courses"
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                >
+                  Courses
+                </Link>
+              )}
               <div className="flex items-center space-x-2">
                 <span className="text-2xl">{currentUser?.avatar}</span>
                 <span className="text-sm font-medium text-gray-700">
                   {currentUser?.name}
                 </span>
               </div>
-              
-              {/* Chatbot Button */}
               <button
                 onClick={() => setIsChatbotOpen(true)}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
@@ -47,8 +54,6 @@ const AppContent = () => {
                 <span className="mr-2">🤖</span>
                 Ask Assistant
               </button>
-              
-              {/* Logout Button */}
               <button
                 onClick={clearRole}
                 className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
@@ -60,7 +65,6 @@ const AppContent = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <main>
         <Routes>
           <Route 
@@ -73,11 +77,15 @@ const AppContent = () => {
               )
             } 
           />
+          {currentRole === 'student' && (
+            <>
+              <Route path="/courses" element={<CoursesPage />} />
+              <Route path="/courses/:id" element={<CourseDetail />} />
+            </>
+          )}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
-
-      {/* Chatbot Modal */}
       <ChatbotModal 
         isOpen={isChatbotOpen} 
         onClose={() => setIsChatbotOpen(false)} 
@@ -86,7 +94,6 @@ const AppContent = () => {
   );
 };
 
-// Main App Component with Providers
 const App = () => {
   return (
     <Router>

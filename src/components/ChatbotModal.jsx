@@ -52,13 +52,7 @@ const ChatbotModal = ({ isOpen, onClose }) => {
     const data = getChartData(chartDataKey);
     const config = chartConfigs[chartDataKey];
 
-    // Debug logging
-    console.log('Chart rendering:', { chartDataKey, data, config, chartType });
-
-    if (!data || !config) {
-      console.log('Missing data or config:', { data, config });
-      return null;
-    }
+    if (!data || !config) return null;
 
     if (chartType === 'line') {
       return (
@@ -107,95 +101,22 @@ const ChatbotModal = ({ isOpen, onClose }) => {
     return null;
   };
 
-  const handleSendMessage = () => {
-    if (!inputValue.trim()) return;
+  const handleSendMessage = (customInput = null) => {
+    const input = customInput || inputValue;
+    if (!input.trim()) return;
 
     const userMessage = {
       type: 'user',
-      content: inputValue,
+      content: input,
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
 
-    // Find matching Q&A with precise matching
     const qaData = currentRole === 'admin' ? chatbotData.admin.qa : chatbotData.student.qa;
-    
-    // Create a more reliable matching system
-    let bestMatch = null;
-    let bestScore = 0;
-    
-    qaData.forEach(qa => {
-      const question = qa.question.toLowerCase();
-      const input = inputValue.toLowerCase();
-      
-      let score = 0;
-      
-      // Exact match gets highest score
-      if (question === input) {
-        score = 100;
-      }
-      // Question contains input gets high score
-      else if (question.includes(input)) {
-        score = 80;
-      }
-      // Input contains question gets high score
-      else if (input.includes(question)) {
-        score = 80;
-      }
-      // Check for key phrase matches
-      else {
-        const keyPhrases = [
-          'weekly user activity',
-          'course completion rates',
-          'weekly progress',
-          'course progress'
-        ];
-        
-        keyPhrases.forEach(phrase => {
-          if (input.includes(phrase) && question.includes(phrase)) {
-            score = 70;
-          }
-        });
-        
-        // Check for individual word matches (only for longer words)
-        const questionWords = question.split(' ').filter(word => word.length > 3);
-        const inputWords = input.split(' ').filter(word => word.length > 3);
-        
-        let wordMatches = 0;
-        questionWords.forEach(qWord => {
-          inputWords.forEach(inputWord => {
-            if (qWord === inputWord) {
-              wordMatches++;
-            }
-          });
-        });
-        
-        // Add score based on word matches
-        if (wordMatches > 0) {
-          score += wordMatches * 10;
-        }
-      }
-      
-      // Update best match if this score is higher
-      if (score > bestScore) {
-        bestScore = score;
-        bestMatch = qa;
-      }
-    });
-    
-    // Only use match if score is high enough
-    const matchingQA = bestScore >= 30 ? bestMatch : null;
-    
-    // Debug logging
-    console.log('Question matching:', { 
-      input: inputValue, 
-      bestMatch: bestMatch?.question,
-      bestScore,
-      matchingQA: matchingQA?.question,
-      qaData: qaData.map(q => q.question) 
-    });
+
+    const matchingQA = qaData.find(qa => qa.question.toLowerCase() === input.toLowerCase());
 
     setTimeout(() => {
       if (matchingQA) {
@@ -208,15 +129,11 @@ const ChatbotModal = ({ isOpen, onClose }) => {
           chartData: matchingQA.chartData,
           chartTitle: matchingQA.chartTitle
         };
-        
-        // Debug logging for chart messages
-        console.log('Bot message with chart:', botMessage);
-        
         setMessages(prev => [...prev, botMessage]);
       } else {
         const botMessage = {
           type: 'bot',
-          content: "I'm sorry, I don't understand that question. Try asking about your progress, deadlines, or use one of the suggested questions below.",
+          content: "I'm sorry, I don't understand that question. Please try one of the suggested questions below.",
           timestamp: new Date()
         };
         setMessages(prev => [...prev, botMessage]);
@@ -225,7 +142,7 @@ const ChatbotModal = ({ isOpen, onClose }) => {
   };
 
   const handleSuggestionClick = (suggestion) => {
-    setInputValue(suggestion);
+    handleSendMessage(suggestion);
   };
 
   if (!isOpen) return null;
@@ -233,7 +150,6 @@ const ChatbotModal = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[80vh] flex flex-col">
-        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <div className="flex items-center space-x-3">
             <span className="text-2xl">🤖</span>
@@ -248,8 +164,6 @@ const ChatbotModal = ({ isOpen, onClose }) => {
             ×
           </button>
         </div>
-
-        {/* Messages */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {messages.map((message, index) => (
             <div
@@ -275,8 +189,6 @@ const ChatbotModal = ({ isOpen, onClose }) => {
           ))}
           <div ref={messagesEndRef} />
         </div>
-
-        {/* Suggestions */}
         <div className="p-4 border-t bg-gray-50">
           <p className="text-sm text-gray-600 mb-2">Suggested questions:</p>
           <div className="flex flex-wrap gap-2">
@@ -291,20 +203,18 @@ const ChatbotModal = ({ isOpen, onClose }) => {
             ))}
           </div>
         </div>
-
-        {/* Input */}
         <div className="p-4 border-t">
           <div className="flex space-x-2">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="Ask me anything..."
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
-              onClick={handleSendMessage}
+              onClick={() => handleSendMessage()}
               className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
             >
               Send
@@ -316,4 +226,4 @@ const ChatbotModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default ChatbotModal; 
+export default ChatbotModal;

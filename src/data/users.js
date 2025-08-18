@@ -1,4 +1,3 @@
-// Mock user data for the LMS application
 export const users = [
   {
     id: 1,
