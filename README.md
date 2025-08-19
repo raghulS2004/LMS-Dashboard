@@ -191,24 +191,6 @@ The application uses comprehensive mock data to demonstrate functionality:
 - **Student Progress**: Learning metrics and course data
 - **Chatbot Intelligence**: Role-specific Q&A with chart triggers
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Commit your changes: `git commit -am 'Add feature'`
-4. Push to the branch: `git push origin feature-name`
-5. Submit a pull request
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🆘 Support
-
-For questions or issues:
-1. Check the existing issues in the repository
-2. Create a new issue with detailed information
-3. Include browser console errors and steps to reproduce
 
 ## 🔮 Future Enhancements
 
@@ -221,5 +203,4 @@ For questions or issues:
 
 ---
 
-**Built with ❤️ using React, Vite, and Tailwind CSS**
->>>>>>> cc41230 (Initial commit: Complete LMS Dashboard with role-based access control, admin/student dashboards, chatbot, and responsive design)
+**Built using React, Vite, and Tailwind CSS**
