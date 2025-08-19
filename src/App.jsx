@@ -8,12 +8,10 @@ import CoursesPage from './components/CoursesPage';
 import CourseDetail from './components/CourseDetail';
 import { useState } from 'react';
 
-// Main App Content Component
 const AppContent = () => {
   const { currentRole, currentUser, clearRole } = useRole();
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
-  // If no role is selected, show role selector
   if (!currentRole) {
     return <RoleSelector />;
   }
